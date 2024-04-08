@@ -1,4 +1,10 @@
-1. delete normal mode command letters like "jk" for leaving insert mode.
+1. no writing in normal mode
+2. writing in insert mode
+3. with i pressed to insert mode
+4. insert mode is exactly like without the plugin with all the shortcuts etc.
+5. with nnoremap i h is the insert mode now activated with h
+6. with jk pressed to normal mode again
+7. delete normal mode command letters like "jk" for leaving insert mode.
 
 # Vim Motions
 
