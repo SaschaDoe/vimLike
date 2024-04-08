@@ -8,14 +8,13 @@
     <name>VimLike</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="support@yourcompany.com" url="https://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="sascha.luebke@web.de" url="https://www.yourcompany.com">Sascha Luebke</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Configurable vim motions. Press i to go to insert mode and press jk to go back to normal mode<br>
   ]]></description>
 
     <!-- Product and plugin compatibility requirements.
@@ -27,4 +26,20 @@
     <extensions defaultExtensionNs="com.intellij">
 
     </extensions>
+
+    <applicationListeners>
+
+    </applicationListeners>
+
+
+    <actions>
+        <action id="com.example.vimlike.InsertModeAction" class="com.example.vimlike.InsertModeAction"
+                text="InsertModeAction">
+
+        </action>
+        <action id="EditorHandlerIllustration" class="com.example.vimlike.EditorHandlerIllustration" text="My Custom Action" description="Description of your action">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift W"/>
+        </action>
+
+    </actions>
 </idea-plugin>
