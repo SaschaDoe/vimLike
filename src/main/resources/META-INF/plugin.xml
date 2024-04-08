@@ -25,21 +25,16 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
 
+        <postStartupActivity implementation="com.example.vimlike.MyPluginStartupActivity"/>
     </extensions>
 
-    <applicationListeners>
-
-    </applicationListeners>
 
 
     <actions>
-        <action id="com.example.vimlike.InsertModeAction" class="com.example.vimlike.InsertModeAction"
-                text="InsertModeAction">
-
-        </action>
+        <!--
         <action id="EditorHandlerIllustration" class="com.example.vimlike.EditorHandlerIllustration" text="My Custom Action" description="Description of your action">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift W"/>
         </action>
-
+-->
     </actions>
 </idea-plugin>
