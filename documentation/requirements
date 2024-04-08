@@ -1,1 +1,203 @@
 1. delete normal mode command letters like "jk" for leaving insert mode.
+
+# Vim Motions
+
+## Basic Motions
+- `h` - Move left
+- `j` - Move down
+- `k` - Move up
+- `l` - Move right
+- `w` - Move to the start of the next word
+- `W` - Move to the start of the next word, skipping punctuation
+- `e` - Move to the end of the next word
+- `E` - Move to the end of the next word, skipping punctuation
+- `b` - Move to the beginning of the previous word
+- `B` - Move to the beginning of the previous word, skipping punctuation
+- `0` - Move to the beginning of the line
+- `^` - Move to the first non-blank character of the line
+- `$` - Move to the end of the line
+- `%` - Move to the matching bracket ((), {}, [])
+- `gg` - Move to the beginning of the file
+- `G` - Move to the end of the file
+- `{` - Move to the previous paragraph
+- `}` - Move to the next paragraph
+- `[[` - Move to the previous section
+- `]]` - Move to the next section
+
+## Search Motions
+- `f<char>` - Move to the next occurrence of `<char>` in the current line
+- `F<char>` - Move to the previous occurrence of `<char>` in the current line
+- `t<char>` - Move right before the next occurrence of `<char>` in the current line
+- `T<char>` - Move right before the previous occurrence of `<char>` in the current line
+- `*` - Move to the next occurrence of the word under the cursor
+- `#` - Move to the previous occurrence of the word under the cursor
+- `/pattern` - Search forward for `pattern`
+- `?pattern` - Search backward for `pattern`
+- `n` - Repeat the last search in the same direction
+- `N` - Repeat the last search in the opposite direction
+
+## EasyMotion Motions
+- `<leader><leader>w` - Jump to a word starting with a specific letter
+- `<leader><leader>f<char>` - Jump to a character `<char>` in the visible lines
+- `<leader><leader>t<char>` - Jump before a character `<char>` in the visible lines
+
+(Note: Replace `<leader>` with your actual leader key, usually set to `\` or `,` in Vim.)
+
+Feel free to add more motions or sections as needed.
+# Vim Motions Requirement Document
+
+## Overview
+This document outlines the requirements for implementing motions in a complete rewrite of Vim. Motions are fundamental to the navigation and editing capabilities in Vim, allowing users to move efficiently within and across files.
+
+## General Requirements
+1. **Modality**: Motions must respect Vim's modal editing approach, primarily functioning in Normal, Visual, and Operator-pending modes.
+2. **Extensibility**: The implementation of motions should be extensible, allowing for custom motions to be added through plugins or user configurations.
+3. **Consistency**: Motions should behave consistently across different contexts, providing predictable outcomes for users.
+4. **Composition**: Motions should be composable with operators, allowing users to execute complex editing commands in a concise manner.
+
+## Specific Motion Requirements
+1. **Character Motions**:
+   - Motions such as `h`, `j`, `k`, `l` must move the cursor one character in the respective direction.
+   - These motions should support count prefixes to repeat the motion a specified number of times.
+
+2. **Word Motions**:
+   - Motions like `w`, `b`, `e` should move the cursor to the beginning of the next word, the beginning of the previous word, and the end of the current/next word, respectively.
+   - Word motions must differentiate between words separated by whitespace and words separated by punctuation (`W`, `B`, `E`).
+
+3. **Line Motions**:
+   - `0` and `$` should move the cursor to the beginning and end of the line, respectively.
+   - `^` moves to the first non-blank character of the line.
+   - Line motions should interact with count prefixes, allowing for movement across multiple lines.
+
+4. **Document Motions**:
+   - `gg` and `G` should move the cursor to the beginning and end of the document, respectively.
+   - When used with a count prefix, `G` moves to the specified line number.
+
+5. **Search Motions**:
+   - Search commands (`/`, `?`, `n`, `N`) should allow for movement across the document based on search patterns.
+   - Search motions must highlight all occurrences and cycle through them with `n` and `N`.
+
+6. **Matching Pair Motions**:
+   - `%` should move the cursor to the matching bracket, parenthesis, or other specified pair characters.
+
+7. **Visual Mode Enhancements**:
+   - In Visual mode, all motions should extend the selection rather than just moving the cursor.
+   - Visual mode motions should support inclusive and exclusive selections, depending on the motion used.
+
+8. **Operator-pending Mode Integration**:
+   - Motions in Operator-pending mode should allow users to define the scope of an operation (like deletion, yanking, or changing).
+
+9. **Plugin and Custom Motions**:
+   - The system should provide an API or framework for defining custom motions, allowing for the creation of motions beyond the default set.
+   - Custom motions should adhere to the same principles of composability and consistency as built-in motions.
+
+## Testing and Documentation
+- Each motion must have accompanying unit tests that validate its functionality in various contexts.
+- Documentation should be provided for each motion, detailing its behavior, usage, and any special considerations.
+
+## Compatibility
+- While innovation and improvements are encouraged, the implementation should strive for compatibility with classic Vim motions, ensuring a familiar experience for existing Vim users.
+
+Certainly! In Vim, the power of motions is fully realized when they are combined with various operators or used in different contexts. Here are some examples of how motions act together with other commands to perform more complex tasks:
+
+1. **Combining Motions with Operators:**
+   - `d$`: This command deletes from the cursor's current position to the end of the line. Here, `d` is the delete operator, and `$` is the motion that moves to the end of the line.
+   - `c3w`: This command changes the next three words. `c` is the change operator, and `3w` is the motion that moves forward three words.
+   - `y}`: This command yanks (copies) the text from the current position to the end of the paragraph. `y` is the yank operator, and `}` is the motion that moves to the end of the paragraph.
+
+2. **Using Motions in Visual Mode:**
+   - `v$`: This command starts visual mode and selects text from the cursor to the end of the line. `v` enters visual mode, and `$` extends the selection to the end of the line.
+   - `V3j`: This command starts linewise visual mode and selects the current line and the next three lines. `V` enters linewise visual mode, and `3j` extends the selection down three lines.
+
+3. **Combining Motions with Search:**
+   - `d/foo`: This command deletes everything from the cursor to the next occurrence of "foo". `d` is the delete operator, and `/foo` is the search motion that moves the cursor to the next occurrence of "foo".
+   - `c?bar`: This command changes text from the cursor's current position up to the previous occurrence of "bar". `c` is the change operator, and `?bar` is the search motion that moves the cursor to the previous occurrence of "bar".
+
+4. **Combining Motions with Jumps:**
+   - `df,`: This command deletes everything from the cursor's position up to and including the next comma on the line. `d` is the delete operator, and `f,` is the motion to jump forward to the next comma.
+   - `t`: Suppose you're on a line like `callFunction(argument);` and your cursor is on the `c`. If you press `f(`, the cursor will move to the `(`. Pressing `t(` would place the cursor right before `(`.
+
+These examples illustrate how motions can be paired with various commands in Vim to create powerful and efficient editing commands. The composability of motions and operators is a core aspect of Vim's design, enabling users to perform complex text manipulations with just a few keystrokes.
+
+# Additional Requirements for Bracket Features in Vim
+
+## Enhanced Bracket Motions
+1. **Smart Matching**:
+   - Implement intelligent bracket matching that understands the syntax and structure of various programming languages, not just matching pairs based on characters.
+   - Support for nested brackets should be robust, allowing users to navigate complex code structures easily.
+
+2. **Bracket Skipping**:
+   - Provide motions to move to the next or previous bracket at the same nesting level, skipping over nested bracket pairs.
+   - For example, in the code `(a {b [c] d} e)`, from the first position, a motion should allow jumping directly to the matching `)` at the end.
+
+3. **Bracket Selection**:
+   - Introduce motions to select everything inside the nearest pair of brackets, regardless of the cursor's position within the brackets.
+   - This feature should support all types of brackets, including `()`, `{}`, `[]`, and `<>`, and should be aware of the language-specific nesting rules.
+
+4. **Bracket Manipulation**:
+   - Enable users to easily change, delete, or insert brackets while maintaining the correct opening and closing types.
+   - Include functionality to automatically adjust spacing or indentation within the brackets to conform to user-defined or language-specific style guides.
+
+## Integration with Text Objects
+1. **Enhanced Text Objects for Brackets**:
+   - Develop text objects that represent the content inside brackets, allowing users to apply commands over the block of text enclosed by a pair of brackets.
+   - These text objects should work with all types of brackets and be extendable to custom bracket-like structures defined in user configurations or plugins.
+
+2. **Bracket Text Object Inclusivity**:
+   - Allow users to choose whether text objects include or exclude the brackets themselves in operations, catering to different use cases like editing the content within the brackets vs. editing the entire block, including the brackets.
+
+## Advanced Features
+1. **Bracket Pair Highlighting**:
+   - Implement dynamic highlighting of matching bracket pairs when the cursor is over a bracket, enhancing code readability and navigation.
+   - Offer customization options for the highlighting style to accommodate user preferences and accessibility needs.
+
+2. **Language-Specific Bracket Handling**:
+   - Provide configurations or plugins that understand the specific bracket use cases of different programming languages, like handling template tags in HTML or special bracket use in Lisp.
+
+3. **Multi-Bracket Jumping**:
+   - Introduce commands or motions that allow users to jump over multiple bracket pairs at once, useful for quickly navigating through complex code structures.
+
+4. **Bracket Error Indication**:
+   - Offer visual indicators or linting features that highlight unmatched or misaligned brackets, assisting in code debugging and ensuring structural integrity.
+
+## Testing and Documentation
+- Ensure that all bracket-related features are accompanied by comprehensive tests, especially for language-specific functionalities and edge cases.
+- Provide detailed documentation for each bracket feature, including usage examples, configuration options, and troubleshooting tips.
+
+## Compatibility and Extensibility
+- Ensure that new bracket features integrate seamlessly with existing Vim motions and commands, maintaining the editor's modal nature and composability.
+- Design the bracket handling features to be extensible, allowing for community contributions, plugins, and language-specific enhancements.
+
+Certainly! Assigning unused letters like `q` to new features can enhance the Vim clone's functionality and provide users with additional tools for efficient editing. Here are some ideas for features that could be assigned to unused letters, enhancing the capabilities of the Vim clone:
+
+1. **`q` - Quick Align**:
+   - Use `q` to initiate a quick alignment feature. For example, `qa=` could align code or text around the `=` character. This could be particularly useful for aligning assignments or declarations in programming.
+
+2. **`x` - Extended Search**:
+   - Although `x` is typically used to delete the character under the cursor, it could be repurposed in a different mode or context to extend search functionalities. For instance, `x/` could initiate an extended search mode with more advanced search capabilities like regex or fuzzy search.
+
+3. **`z` - Fold Management**:
+   - `z` is often associated with folding in Vim, but additional fold management features could be introduced. For instance, `za` to toggle a fold and `zA` to toggle all folds recursively could provide more intuitive and comprehensive folding control.
+
+4. **`Q` - Quick Command Record**:
+   - Repurpose the `Q` key to start recording a series of commands in a more user-friendly way than the traditional macro recording. This could include a visual representation of the recording process and easier management of recorded macros.
+
+5. **`U` - Undo Tree Visualization**:
+   - In Vim, `U` is used to undo all changes on a line. This feature could be enhanced or changed to provide a visual undo tree, where users can navigate through their history of changes in a more interactive and visual manner.
+
+6. **`I` - Intelligent Code Insertion**:
+   - While `I` is typically used to insert at the beginning of the line, it could be enhanced to provide context-aware insertion options. For instance, in a programming context, `I` could open a menu with common constructs or snippets relevant to the current context.
+
+7. **`Y` - Yank to Clipboard**:
+   - By default, `Y` yanks the line, which is somewhat redundant with `yy`. `Y` could be repurposed to yank directly to the system clipboard, making it consistent with `P` and `p` for pasting from the clipboard.
+
+8. **`O` - Open Link**:
+   - If the cursor is over a URL or a file path, pressing `O` could open the link in the default browser or the file in a new buffer, enhancing navigation and interaction within the editor.
+
+9. **`K` - Contextual Help**:
+   - Enhance `K` to provide context-sensitive help. Depending on the cursor's position, pressing `K` could bring up documentation for the code element or command under the cursor.
+
+10. **`V` - Visual Block Enhancement**:
+    - While `V` initiates linewise visual mode, it could offer enhanced block editing features, such as column editing or more intuitive text block manipulation, when used with other key combinations.
+
+By assigning these unused or underutilized keys to new or enhanced features, the Vim clone could offer a more powerful and user-friendly editing experience, catering to a broader range of user needs and preferences.#
