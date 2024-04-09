@@ -1,3 +1,6 @@
+How to document?
+
+
 1. no writing in normal mode
 2. writing in insert mode
 3. with i pressed to insert mode
